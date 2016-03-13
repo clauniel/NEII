@@ -1,0 +1,33 @@
+\input{pre}
+\tikzset{rrail/.style={rground,yscale=-1}}
+\begin{document}
+\input{frontpage}
+\newpage
+\section{The Axon-Hillock Circuit}
+The axon-hillock circuit needs a current to be supplied to the membrane node. Assuming that the initial conditions have the
+output at ground, supplying a current will start charging the membrane capacitor. Once the voltage on the membrane 
+capacitor reaches the tipping point of the first inverter, it will flip and cause the second inverter to send the
+output to $V_{dd}$. The chance in the output is coupled back to the membrane potential which will increase by 
+\begin{equation*}
+    \Delta V_{mem} = \frac{C_{f}}{C_f+C_{mem}} V_{dd}
+\end{equation*}
+Where $C_f$ is the feedback capacitance and $C_{mem}$ the membrane capacitance.
+
+When the output goes high, the membrane capacitor will start to discharge through the now open transistor providing 
+a path to ground. Once the membrance potential goes below the first inverters tipping point, the reverse action will 
+occur and the positive feedback through the feedback capacitor will decrease the membrance node voltage by 
+\begin{equation*}
+    \Delta V_{mem} = \frac{-C_{f}}{C_f+C_{mem}} V_{dd}
+\end{equation*}
+We can calculate the amount of time the output spends being high and low in steady state for a given input current. These
+are, respectively
+\begin{equation*}
+    T_H = \frac{(C_f+C_{mem})\Delta V_{mem}}{I_r-I_{in}} = \frac{C_fV_{dd}}{I_r-I_{in}}
+\end{equation*}
+and
+\begin{equation*}
+    T_L = \frac{(C_f+C_{mem})\Delta V_{mem}}{I_{in}} = \frac{C_fV_{dd}}{I_{in}}
+\end{equation*}
+Because the charge that must be removed from the membrane node is given by the capacitance of the node and the change in 
+voltage. 
+\end{document}

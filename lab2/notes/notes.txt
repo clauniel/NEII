@@ -1,0 +1,5 @@
+average inverter power 100fF feedback 10 spikes 1nA input: 5.327 uA * 1.8 V
+Average total power 100fF feedback 10 spikes 1nA input: 5.365 uA * 1.8 V
+
+average inverter power new circuit 10 spikes: 1.396 nA * 1.8 V
+average total power 10 spikes: 2.55 nA * 1.8 V

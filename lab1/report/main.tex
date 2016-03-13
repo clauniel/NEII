@@ -1,0 +1,93 @@
+\input{pre}
+
+\tikzset{rrail/.style={rground,yscale=-1}}
+\newcommand{\reffig}[1]{Fig.~\ref{#1}}
+
+\begin{document}
+\input{frontpage}
+\newpage
+\setcounter{section}{1}
+\section{Transistor as a Resistive Element: Conductance Linearity}
+\begin{figure}
+    \center
+    \begin{subfigure}{0.3\textwidth}
+        \center
+        \begin{circuitikz}[american voltages] \draw 
+            (0,0) node[pmos, rotate=-90] (p) {}
+            (p.B) node[anchor=north] {$M_1$}
+            (p.source) node[anchor=west] {$V_2$}
+            (p.drain) node[anchor=east] {$V_1$}
+            (p.gate) node[anchor=south] {$V_b$}
+            (p.drain) to[short,i=$I_{M1}$] ++(0.1,0)
+            (0,-3) node[ground] {}
+            (0,-3) to[V=$V_{cm}$] (0,-2)
+            (0,-2) -- (0,-2 -| p.drain) to[V=$\frac{V_{diff}}{2}$] (p.drain)
+            (p.source) to[V=$\frac{V_{diff}}{2}$] (0,-2 -| p.source) -- (0,-2)
+        ;\end{circuitikz}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \center
+        \begin{circuitikz} \draw
+            (0,0) node[nmos] (m4) {}
+            (m4.drain) to[short] ++(0,0.0) node[rrail] {}
+            (m4.B) node[anchor=west] {$M_4$}
+            (0,-2) node[nmos] (m3) {}
+            (m3.B) node[anchor=west] {$M_3$}
+            (m3.source) to[short, i=$I_b$] ++(0,-0.1) node[ground] {}
+            (m3.drain) -- (m4.source) -- ++(0.5,0) node[anchor=west] {$V_b$}
+            (m4.gate) node[anchor=east] {$V_1$}
+            (m3.gate) node[anchor=east] {$V_m$}
+        ;\end{circuitikz}
+    \end{subfigure}
+    \caption{Linear resistance circuit with \(V_{diff}\) applied to the pFET drain and source.}
+    \label{fig:linres}
+\end{figure}
+\begin{figure}
+    \center
+    \includegraphics{exp2.eps}
+    \caption{Current through the resistive element with $\Delta V = V_1-V_2$, $V_{cm}=0.9$ V and $V_m=0.2$ V.}
+    \label{fig:exp2}
+\end{figure}
+Fig.~\ref{fig:exp2} shows the current through the resistive element with fixed $V_m$ and $V_{cm}$. For positive \(\Delta V\),
+the current follows the expression derived in the prelab
+\begin{equation*}
+    I_{M1} = I_b^\kappa e^{\frac{\kappa (V_w - \kappa \left(V_{cm}+\frac{\Delta V}{2}\right)) - (V_w - V_{cm})}{U_T}}\left(e^{\frac{\Delta V}{2U_T}}-e^{\frac{-\Delta V}{2U_T}}\right)
+\end{equation*}
+However, for negative \(\Delta V\), the pFET transistor moves out of subthreshold and the current is no longer linear in a log plot.
+\section{Transistor as a Resistive Element: Varying Conductance}
+\begin{figure}
+    \center
+    \includegraphics{exp3.eps}
+    \caption{Current through the resistive element with $V_{cm}=0.9$ V and varying $V_m$.}
+    \label{fig:exp3}
+\end{figure}
+The effect of varying $V_m$ can be seen in Fig.~\ref{fig:exp3}. The current through the resistive element increases, because $I_b$ increases
+and pulls the gate voltage of the pFET down, which increases current. This also causes the pFET to go above threshold more quickly for 
+negative \(\Delta V\).
+\section{Transistor as a Resistive Element: Common Mode Sensitivity}
+\begin{figure}
+    \center
+    \includegraphics{exp4.eps}
+    \caption{Current through the resistive element with $V_m=0.2$ V and varying $V_{cm}$.}
+    \label{fig:exp4}
+\end{figure}
+Fig.~\ref{fig:exp4} shows the effect of changing the common mode voltage. Since the common mode voltage is coupled to the gate voltage of the pFET, the current will go down. 
+However, increasing the common mode voltage also increases the drain and source voltages. Since these are directly coupled to the final current, and not by a factor of
+\(\kappa\) like the gate voltage, the net effect is an increase in current.
+\section{Transistor as a Resistive Element: Symmeterizing the Circuit}
+\begin{figure}
+    \center
+    \includegraphics{exp53.eps}
+    \caption{Current through the symmeterized resistive element with $V_{cm} = 0.9$ V and varying $V_m$.}
+    \label{fig:exp53}
+\end{figure}
+\begin{figure}
+    \center
+    \includegraphics{exp54.eps}
+    \caption{Current through the symmeterized resistive element with $V_m = 0.2$ V and varying $V_{cm}$.}
+    \label{fig:exp54}
+\end{figure}
+The repeated experiments for the symmeterized resistive elements are shown in Figs.~\ref{fig:exp53} and~\ref{fig:exp54}. 
+They are exactly the same as for the initial one, except the current is mirrored around the y-axis. This is because the
+circuit essentially is the same, only with \(\Delta V\) and the direction of current being reversed.
+\end{document}

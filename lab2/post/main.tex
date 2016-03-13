@@ -1,0 +1,111 @@
+\input{pre}
+
+\tikzset{rrail/.style={rground,yscale=-1}}
+\newcommand{\reffig}[1]{Fig.~\ref{#1}}
+
+\begin{document}
+\input{frontpage}
+\newpage
+\section{Post-Lab}
+\subsection{Design flow step that verifies the layout versus schematic}
+The Layout versus Schematic (LVS) design flow step verifies that the drawn layout matches the netlist derived
+from the schematic. It can reveal missing connections or component and shorts. 
+
+\subsection{SPICE analysis types}
+\begin{itemize}
+    \item {.op:} Computes the operating point for the circuit being analysed.
+    \item {.dc:} Performs a DC analysis when given a value for a specific voltage/current source.
+    \item {.ac:} Performs AC analysis when given the frequency for a specific voltage/current source.
+    \item {.tran:} Performs transient analysis of the circuit and takes start/stop/interval times for
+        the transient analysis.
+\end{itemize}
+
+\subsection{EKV model approaching sub- and super-threshold}
+The EKV model of transistor current as a function of source, drain, bulk and gate voltages, considers the
+forward current and reverse current
+\begin{equation*}
+    I = I_f - I_r
+\end{equation*}
+Where
+\begin{equation*}
+    I_f = \frac{W}{L}U_T^2\frac{\mu C_{ox}}{\kappa}\ln^2\left(1+e^{\frac{\kappa V_g + (1-\kappa)V_b - \kappa V_{T0} - V_s}{2U_T}}\right)
+\end{equation*}
+And 
+\begin{equation*}
+    I_r = \frac{W}{L}U_T^2\frac{\mu C_{ox}}{\kappa}\ln^2\left(1+e^{\frac{\kappa V_g + (1-\kappa)V_b - \kappa V_{T0} - V_d}{2U_T}}\right)
+\end{equation*}
+\begin{figure}
+    \center
+    \includegraphics{expquad.eps}
+    \caption{The function \(\ln^2\left(1+e^{\frac{x}{2}}\right)\) interpolates smoothly between an exponential function for \(x<0\) and 
+    a quadratic function for \(x>0\).}
+    \label{fig:expquad}
+\end{figure}
+As can be seen in Fig.~\ref{fig:expquad}, the \(\ln^2\left(1+e^{\frac{x}{2}}\right)\) function interpolates smoothly between the an exponential and 
+quadratic function. For sufficiently high values of \(V_d\), we can neglect the reverse current and only consider the forward current in the 
+EKV model. When \(V_s=0\), the forward current in the EKV model can therefore be approxmated as 
+\begin{equation*}
+    I_f \simeq \frac{W}{L}U_T^2\frac{\mu C_{ox}}{2\kappa}e^{\frac{\kappa V_g +(1-\kappa)V_b}{U_T}}
+\end{equation*}
+when \(\kappa V_g + (1-\kappa)V_b < \kappa V_{T0}\). This is the subthreshold model where \(I_0 = \frac{W}{L}U_T^2\frac{\mu C_{ox}}{2\kappa}e^{\frac{\kappa V_{T0}}{U_T}}\).
+
+When \(\kappa V_g + (1-\kappa)V_b > \kappa V_{T0}\), the forward current can be approximated as
+\begin{equation*}
+    I_f \simeq \frac{W}{L}\frac{\mu C_{ox}}{2\kappa}\left(\kappa V_g - (1-\kappa)V_b - \kappa V_{T0}\right)^2
+\end{equation*}
+Which is the above threshold model with \(\beta = \frac{W}{L}\mu C_{ox}\).
+
+\subsection{Threshold current}
+The oxide capacitance in the EKV model is the capacitance per area, which for an oxide thickness of \(T_{ox}=40\text{nm}\) is
+\begin{equation*}
+    C_{ox} = \frac{\varepsilon_0 \varepsilon_r }{T_{ox}} = \frac{3.9\varepsilon_0}{40\text{nm}} = 0.8633\frac{\text{fF}}{\mu\text{m}^2}
+\end{equation*}
+Assuming \(V_s=0\) and \(V_d > 4U_T\), the current at threshold in the EKV model is simply when the term in the exponential is 0, that is:
+\begin{equation*}
+    I_T = \frac{W}{L}2U_T^2\frac{\mu C_{ox}}{2\kappa}\ln^2\left(2\right) = 4\cdot25^2\text{mV}^2\cdot\frac{400\frac{\text{cm}^2}{\text{Vs}}\cdot0.8633\frac{\text{fF}}{\mu \text{m}^2}}{0.75}\cdot\ln^2\left(2\right) = 55.3 \text{nA}
+\end{equation*}
+
+\subsection{Resistive element}
+\begin{figure}
+    \center
+    \begin{subfigure}{0.3\textwidth}
+        \center
+        \begin{circuitikz} \draw 
+            (0,0) node[pmos, rotate=-90] (p) {}
+            (p.B) node[anchor=north] {$M_1$}
+            (p.source) node[anchor=west] {$V_2$}
+            (p.drain) node[anchor=east] {$V_1$}
+            (p.gate) node[anchor=south] {$V_b$}
+            (p.drain) to[short,i=$I_{M1}$] ++(0.1,0)
+        ;\end{circuitikz}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \center
+        \begin{circuitikz} \draw
+            (0,0) node[nmos] (m4) {}
+            (m4.drain) to[short] ++(0,0.0) node[rrail] {}
+            (m4.B) node[anchor=west] {$M_4$}
+            (0,-2) node[nmos] (m3) {}
+            (m3.B) node[anchor=west] {$M_3$}
+            (m3.source) to[short, i=$I_b$] ++(0,-0.1) node[ground] {}
+            (m3.drain) -- (m4.source) -- ++(0.5,0) node[anchor=west] {$V_b$}
+            (m4.gate) node[anchor=east] {$V_1$}
+            (m3.gate) node[anchor=east] {$V_m$}
+        ;\end{circuitikz}
+    \end{subfigure}
+    \caption{Resistive element circuit.}
+    \label{fig:linres}
+\end{figure}
+The resistive element can be seen in Fig.~\ref{fig:linres}. The current through it is given by the equation derived in the pre-lab.
+\begin{equation*}
+    I_{M1} = I_b^\kappa e^{\frac{\kappa (V_w - \kappa \left(V_{cm}+\frac{\Delta V}{2}\right)) - (V_w - V_{cm})}{U_T}}\left(e^{\frac{\Delta V}{2U_T}}-e^{\frac{-\Delta V}{2U_T}}\right)
+\end{equation*}
+Sweeping \(V_1\) around \(V_2\) leads to the I-V curve in Fig.~\ref{fig:IV}.
+\begin{figure}
+    \center
+    \includegraphics{post5.eps}
+    \caption{The I-V relationship of the resistive element for a bias current of 1nA, \(V_{dd}=1.8\)V and \(\kappa = 0.8\). The value of \(V_2\) producing a specific curve 
+    is seen where the curve meets the \(V_1\) axis.}
+    \label{fig:IV}
+\end{figure}
+\end{document}

@@ -1,0 +1,163 @@
+\input{pre}
+\tikzset{rrail/.style={rground,yscale=-1}}
+\begin{document}
+\input{frontpage}
+\newpage
+\setcounter{section}{1}
+\begin{figure}
+    \center
+    \begin{subfigure}{0.3\textwidth}
+        \center
+        \begin{circuitikz} \draw
+            (0,0) node[nmos] (n) {}
+            (n.source) node[anchor=north] {S}
+            (n.drain) node[anchor=south] {D}
+            (n.gate) node[anchor=east] {G}
+            (n.drain) to[short, i=$I_{ds}$] ++(0,-0.2)
+        ;\end{circuitikz}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \center
+        \begin{circuitikz} \draw
+            (0,0) node[pmos] (p) {}
+            (p.source) node[anchor=south] {S}
+            (p.drain) node[anchor=north] {D}
+            (p.gate) node[anchor=east] {G}
+            (p.source) to[short, i=$I_{ds}$] ++(0,-0.2)
+        ;\end{circuitikz}
+        \caption{}
+    \end{subfigure}
+    \caption{nFET (a) with gate (G), drain (D) and source (S), and a pFET (b) with the same terminals.}
+    \label{fig:fets}
+\end{figure}
+\section{Transistor Operation in the Subthreshold Domain}
+\subsection{(a) nFET drawing}
+See Fig.~\ref{fig:fets}.
+\subsection{(b) Subthreshold current expression}
+The expression for the current from drain to source, \(I_{ds}\) in an NFET is 
+\begin{equation*}
+    I_{ds} = I_0e^{\frac{\kappa V_g}{U_T}}\left(e^{\frac{-V_s}{U_T}}-e^{\frac{-V_d}{U_T}}\right)
+\end{equation*}
+Which can be split up into the positive forward current 
+\begin{equation*}
+    I_f = I_0e^{\frac{\kappa V_g-V_s}{U_T}}
+\end{equation*}
+And negative reverse current
+\begin{equation*}
+    I_r = I_0e^{\frac{\kappa V_g - V_d}{U_T}}
+\end{equation*}
+\subsection{(c) Effects of drain and source voltages}
+Decreasing the source voltage \(V_s\) has the effect of (i) increasing the forward current, (ii) but it has no effect on
+the reverse current.
+
+Conversely, decreasing the drain voltage \(V_d\) (i) does not affect the forward current, (ii) but it increases the reverse current.
+
+\subsection{(d) Relative magnitudes of forward and reverse currents}
+A transistor operating in subthreshold is in saturation when \(V_{ds}>4U_T\). Given that \(e^4 \simeq 55\), the relative magnitudes of 
+the forward and reverse currents are (i) less than two orders of magnitude in the ohmic region and (ii) more than two orders of magnitude 
+in saturation.
+
+\subsection{(e) Approximate values of \(V_{ds}\)}
+A transistor in subthreshold is in the ohmic region when \(V_{ds}<4U_T\) and in saturation when \(V_{ds}>4U_T\).
+
+\subsection{(f) pFETs}
+See Fig.~\ref{fig:fets} for the pFET drawing.
+
+The expression for current through a pFET in subthreshold is
+\begin{equation*}
+    I_{ds} = I_0e^{\frac{\kappa (V_w-V_g)}{U_T}}\left(e^{\frac{(V_w-V_s}{U_T}}-e^{\frac{(V_w-V_d}{U_T}}\right)
+\end{equation*}
+Where \(V_w\) is the bulk voltage of the pFET transistor.
+
+This can be broken up into a forward current
+\begin{equation*}
+    I_f = I_0e^{\frac{\kappa (V_w-V_g)-(V_w-V_s)}{U_T}}
+\end{equation*}
+And a reverse component
+\begin{equation*}
+    I_r = I_0e^{\frac{\kappa (V_w-V_g)-(V_w-V_d)}{U_T}}
+\end{equation*}
+
+\section{Linear Resistance Circuit}
+\begin{figure}
+    \center
+    \begin{subfigure}{0.3\textwidth}
+        \center
+        \begin{circuitikz} \draw 
+            (0,0) node[pmos, rotate=-90] (p) {}
+            (p.B) node[anchor=north] {$M_1$}
+            (p.source) node[anchor=west] {$V_2$}
+            (p.drain) node[anchor=east] {$V_1$}
+            (p.gate) node[anchor=south] {$V_b$}
+            (p.drain) to[short,i=$I_{M1}$] ++(0.1,0)
+        ;\end{circuitikz}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \center
+        \begin{circuitikz} \draw
+            (0,0) node[nmos] (m4) {}
+            (m4.drain) to[short] ++(0,0.0) node[rrail] {}
+            (m4.B) node[anchor=west] {$M_4$}
+            (0,-2) node[nmos] (m3) {}
+            (m3.B) node[anchor=west] {$M_3$}
+            (m3.source) to[short, i=$I_b$] ++(0,-0.1) node[ground] {}
+            (m3.drain) -- (m4.source) -- ++(0.5,0) node[anchor=west] {$V_b$}
+            (m4.gate) node[anchor=east] {$V_1$}
+            (m3.gate) node[anchor=east] {$V_m$}
+        ;\end{circuitikz}
+    \end{subfigure}
+    \caption{Linear resistance circuit.}
+    \label{fig:linres}
+\end{figure}
+
+\subsection{(a) Expression for current through M1 and M4}
+The common mode voltage \(V_{cm}\) is the average of the inputs.
+\begin{equation*}
+    V_{cm} = \frac{V_1+V_2}{2}
+\end{equation*}
+And the differential voltage is 
+\begin{equation*}
+    \Delta V = V_1 - V_2
+\end{equation*}
+From this it follows that
+\begin{equation*}
+    V_1 = V_{cm} + \frac{\Delta V}{2} \quad , \quad V_2 = V_{cm} - \frac{\Delta V}{2}
+\end{equation*}
+And therefore the expression for the current through M1 can be rewritten as
+\begin{equation}
+    I_{M1} = I_0e^{\frac{\kappa (V_w - V_b) - (V_w - V_{cm})}{U_T}}\left(e^{\frac{\Delta V}{2U_T}}-e^{\frac{-\Delta V}{2U_T}}\right)
+    \label{eq:IM1}
+\end{equation}
+For positive current in the direction noted in Fig.~\ref{fig:linres}.
+
+The current through M4 is \(I_b\) and given by 
+\begin{equation*}
+    I_b = I_0e^{\frac{\kappa V_1 - V_b}{U_T}}
+\end{equation*}
+Assuming that M4 is in subthreshold saturation.
+
+\subsection{(b) M1 current continued}
+Substituting 
+\begin{equation*}
+    V_b = \kappa V_1 - U_T\ln\left(\frac{I_b}{I_0}\right) = \kappa \left( V_{cm} + \frac{\Delta V}{2} \right) - U_T\ln\left(\frac{I_b}{I_0}\right)
+\end{equation*}
+In~\ref{eq:IM1} yields
+\begin{equation*}
+    I_{M1} = I_0e^{\frac{\kappa (V_w - \kappa \left(V_{cm}+\frac{\Delta V}{2}\right) + U_T\ln\left(\frac{I_b}{I_0}\right)) - (V_w - V_{cm})}{U_T}}\left(e^{\frac{\Delta V}{2U_T}}-e^{\frac{-\Delta V}{2U_T}}\right)
+\end{equation*}
+Which reduces to
+\begin{equation*}
+    I_{M1} = I_b^\kappa e^{\frac{\kappa (V_w - \kappa \left(V_{cm}+\frac{\Delta V}{2}\right)) - (V_w - V_{cm})}{U_T}}\left(e^{\frac{\Delta V}{2U_T}}-e^{\frac{-\Delta V}{2U_T}}\right)
+\end{equation*}
+\begin{figure}
+    \center
+    \includegraphics{matlabtimes.eps}
+    \caption{Resistive element current versus \(\Delta V\) in arbitrary units. The curve moves upwards for increasing \(I_b\)}
+    \label{fig:absI}
+\end{figure}
+
+Fig.~\ref{fig:absI} shows how the current behaves as a function of \(\Delta V\). The slope is smaller for positive differential voltages
+because the gate voltage of the pFET transistor in the resistive element depends on \(\Delta V\), and higher gate voltages result in 
+lower currents.
+\end{document}
