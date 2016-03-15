@@ -1,0 +1,53 @@
+\input{pre}
+
+\tikzset{rrail/.style={rground,yscale=-1}}
+\newcommand{\reffig}[1]{Fig.~\ref{#1}}
+
+\begin{document}
+\input{frontpage}
+\newpage
+\section{Making Capacitors}
+
+In this lab session we will create a follower integrator circuit with a time constant of 0.1 ms at a bias current of 1 nA. First we need to calculate the value of the capacitor. The time constant of the circuit is given by the following equation
+\begin{equation*}
+	\tau = RC = \frac{C}{g_m} = \frac{2U_tC}{I_b\kappa} 
+\end{equation*}
+Assuming \(\kappa=0.8\), we obtain
+\begin{equation*}
+	C = \frac{\tau I_b\kappa}{2U_t} = \frac{0.1\cdot10^{-3}\cdot1\cdot10^{-9}\cdot0.8}{2\cdot0.025}=1.6 pF
+\end{equation*}
+Now we simulate a MOS capacitor and measure its current as the voltage increases from 0 to Vdd. From this we can calculate the value of the capacitance as the current divided by the derivative of the voltage. The result is shown in Fig.\ref{fig:1}. The capacitance saturates at the threshold voltage of the transistor. For voltages greater than the threshold, the inversion layer is fully formed and the charge is stored primarily in the capacitor between the gate and the inversion layer, thus the capacitance is approximately constant. 
+\begin{figure}[!h]
+	\center
+	\includegraphics{exp1.eps}
+	\caption{Capacitance value of a \(1 \mu m^2\) MOSCap as its gate to source and drain voltage is swept from 0 to Vdd.}
+	\label{fig:1}
+\end{figure}
+
+From the value of the capacitance we can calculate the thickness of the gate oxide, \(T_{ox}\), as
+\begin{equation*}
+	C = \epsilon_r\epsilon_0\frac{A}{T_{ox}} \rightarrow T_{ox} = \epsilon_r\epsilon_0\frac{A}{C} = 3.9\cdot8.85\cdot10^{-12}\frac{10^{-12}}{7.54\cdot10^{-15}}=4.58 nm
+\end{equation*}
+Making use of \(T_{ox}\) we can now calculate the area that the transistor should have in order to obtain the desired capacitance value of 1.6 pF.
+\begin{equation*}
+	A = \frac{CT_{ox}}{\epsilon_r\epsilon_0}=\frac{1.6\cdot10^{-12}\cdot4.58\cdot10^{-9}}{3.9\cdot8.85\cdot10^{-12}} = 212\mu m^2
+\end{equation*}
+A MOS capacitor of this area is simulated and the result can be seen in Fig.\ref{fig:2}.
+
+\begin{figure}[!h]
+	\center
+	\includegraphics{exp2.eps}
+	\caption{Capacitance value of a \(213 \mu m^2\) MOSCap as its gate to source and drain voltage is swept from 0 to Vdd.}
+	\label{fig:2}
+\end{figure}
+
+\newpage
+\section{Layout of the Follower Integrator}
+Fig.\ref{fig:3} shows the layout of the follower integrator circuit created with Cadence "Virtuoso XL" and the Austria Microsystems (AMS) H18 process. 
+\begin{figure}[!h]
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{layout.png}
+	\caption{Layout of the follower integrator circuit.}
+	\label{fig:3}
+\end{figure}
+
+\end{document}
