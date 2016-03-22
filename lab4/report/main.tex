@@ -1,0 +1,52 @@
+\input{pre}
+
+\tikzset{rrail/.style={rground,yscale=-1}}
+\newcommand{\reffig}[1]{Fig.~\ref{#1}}
+
+\begin{document}
+\input{frontpage}
+\newpage
+\section{AC Analysis of the Delay Line}
+In this lab we have created a delay line composed of three of the follower integrator circuits developed previously. Here we present the simulation results of an AC analysis. 
+
+Fig.\ref{fig:1} shows the transfer function of the delay line using different values in the parameter 'AC Magnitude'. As it can be better seen in Fig.\ref{fig:2}, the transfer functions are identical except for a shift in magnitude proportional to the value of the AC parameter. 
+\begin{figure}[!h]
+	\center
+	\includegraphics{exp1.eps}
+	\caption{Transfer function of the delay line for three values of the parameter 'AC Magnitude'.}
+	\label{fig:1}
+\end{figure}
+
+\begin{figure}[!h]
+	\center
+	\includegraphics{exp1b.eps}
+	\caption{Same as in Fig.\ref{fig:1} but including offsets in the magnitudes for better comparison between the transfer functions.}
+	\label{fig:2}
+\end{figure}
+
+\begin{figure}[!h]
+	\center
+	\includegraphics{exp2.eps}
+	\caption{Transfer functions after the first, second and third stages of the delay line. AC Magnitude is 2.}
+	\label{fig:3}
+\end{figure}
+Fig.\ref{fig:3} shows the transfer functions corresponding to the first, first two and all three of the stages that compose the delay line. 
+
+We are using 0.186 pF capacitors in the follower integrator circuits. Assuming \(\kappa=0.8\) and \(U_t=0.025V\), the expected cutoff frequcy can be calculated as follows
+\begin{equation*}
+	\tau = \frac{C}{g_m} = \frac{2U_tC}{I_b\kappa} 
+\end{equation*}
+\begin{equation*}
+	f_{cutoff} = \frac{1}{2\pi\tau} = \frac{I_b\kappa}{4\pi U_tC} = 1.37\cdot10^{4} Hz
+\end{equation*}
+This is indeed the frequency for which we observe a 3 dB drop in the transfer function of the first stage. 
+
+In Fig.\ref{fig:3} we can also observe that the roll-off increases by 20 dB/decade per stage as predicted by the theory.
+
+At low frequencies we find a small offset between the transfer functions of consecutive stages. This is because the gain of the transconductance amplifiers is not infinite, making the gain of the follower integrators smaller than unity. We can calculate this gain as
+\begin{equation*}
+	A_{buffer}=\frac{A_{amp}}{A_{amp}+1} = 0.9971 \rightarrow A_{amp} = 345 
+\end{equation*}
+
+
+\end{document}
