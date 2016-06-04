@@ -1,0 +1,26 @@
+\input{pre}
+
+\tikzset{rrail/.style={rground,yscale=-1}}
+\newcommand{\reffig}[1]{Fig.~\ref{#1}}
+
+\begin{document}
+\input{frontpage}
+\newpage
+\section{Post-Lab}
+We used square transistors of width and length 1.2\(\mu\)m when constructing the follower integrator. With a gate oxide
+of thickness 4.58nm as calculated in lab 3, the mismatch voltage between matching transistors is 
+\begin{equation*}
+    \sigma = \frac{4.58\text{mV}}{1.2} = 3.82 \text{mV}
+\end{equation*}
+Ignoring the bias transistors and assuming that the mismatch between follower integrators is independent, the delay line
+consists of a chain of 8 matched transistors, two pairs in every follower integrator and one pair between the 1st to 2nd and 2nd to 3rd integrator. This gives a total standard deviation of 
+\begin{equation*}
+    \sigma_T = \sqrt{8\cdot\sigma^2} = 10.80 \text{mV}
+\end{equation*}
+This figure also ignores the systematic offset between follower integrators, caused by the non-infinite gain which slightly
+drops the output voltage in relation to the input voltage even for DC signals.
+
+The mismatch in the bias transistors should not affect the DC offset on the output as the bias current affects the time constant
+and therefore temporal dynamics of the circuit. A mismatch in the bias transistor would change the corner frequency for the 
+individual filters, but not the DC offset.
+\end{document}

@@ -1,0 +1,59 @@
+\input{pre}
+
+\tikzset{rrail/.style={rground,yscale=-1}}
+\newcommand{\reffig}[1]{Fig.~\ref{#1}}
+
+\begin{document}
+\input{frontpage}
+\newpage
+\section{Demux Layout}
+The Demux circuit performs the function of an active low one-hot decoder and performs the function of the
+truth table in Table~\ref{tab:demux}.
+\begin{table}
+    \center
+    \begin{tabular}{c  c | c c c}
+        \texttt{IN0} & \texttt{IN1} & \texttt{nsel0} & \texttt{nsel1} & \texttt{nsel2} \\ \hline
+        0 & 0 & 1 & 1 & 1 \\
+        0 & 1 & 0 & 1 & 1 \\
+        1 & 0 & 1 & 0 & 1 \\
+        1 & 1 & 1 & 1 & 0 \\
+    \end{tabular}
+    \caption{Demux truth table}
+    \label{tab:demux}
+\end{table}
+From the truth table we can read the boolean equations
+\begin{align*}
+    \texttt{nsel0} & = \texttt{IN0} +  \overline{\texttt{IN1}} \\
+    \texttt{nsel1} & = \overline{\texttt{IN0}} +  \texttt{IN1} \\
+    \texttt{nsel2} & = \overline{\texttt{IN0}} +  \overline{\texttt{IN1}} 
+\end{align*}
+Which can be transformed to their NAND form for a smaller circuit
+\begin{align*}
+    \texttt{nsel0} & = \overline{\overline{\texttt{IN0}} \cdot  \texttt{IN1}} \\
+    \texttt{nsel1} & =\overline{\texttt{IN0} \cdot  \overline{\texttt{IN1}}} \\
+    \texttt{nsel2} & = \overline{\texttt{IN0} \cdot \texttt{IN1}}
+\end{align*}
+\begin{figure}
+    \center
+    \includegraphics{demux_layout.png}
+    \caption{Layout of the demux cell.}
+    \label{fig:demux_layout}
+\end{figure}
+We constructed the circuit using the standard logic cells. The final layout can be seen in Fig.~\ref{fig:demux_layout}.
+
+\section{Chip Core}
+The chip core contains analog buffers that buffer the output of the follower integrators. We need them because connecting
+the unbuffered outputs of the follower integrators directly to the bonding pads introduces a large capacitance which they
+cannot drive.
+
+Fig.~\ref{fig:cell_layout} shows the layout of the chip core in Fig.~5.1 of the lab manual. The digital and analog grounds
+are separated because the digital ground moves when the clock signal switches. Using the same ground for analog and digital
+circuits would disturb the characteristics of the analog circuits.
+\begin{figure}
+    \center
+    \includegraphics[angle=90,width=\textwidth]{cell_layout.png}
+    \caption{Layout of circuit from Fig. 5.1 in the lab manual.}
+    \label{fig:cell_layout}
+\end{figure}
+
+\end{document}

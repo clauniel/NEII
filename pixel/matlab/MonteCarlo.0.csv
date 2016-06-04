@@ -1,0 +1,10 @@
+Point,Test,Output,Nominal,Spec,Weight,Pass/Fail
+1,kappalib:pixel_tweak_tb:1,off,37,,,
+1,kappalib:pixel_tweak_tb:1,on,8,,,
+2,kappalib:pixel_tweak_tb:1,off,30,,,
+2,kappalib:pixel_tweak_tb:1,on,8,,,
+3,kappalib:pixel_tweak_tb:1,off,50,,,
+3,kappalib:pixel_tweak_tb:1,on,6,,,
+4,kappalib:pixel_tweak_tb:1,off,80,,,
+4,kappalib:pixel_tweak_tb:1,on,8,,,
+

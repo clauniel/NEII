@@ -1,0 +1,6 @@
+Test,Name,Yield,Min,Target,Max,Mean,Sigma,Sigma to Target,Cpk,Errors
+Yield Estimate: 100 %(200 passed/200 pts)     Confidence Level: <not set>   Error Filter: <not set>,,,,,,,,,,
+kappalib:pixel_tweak_tb:1,,,,,,,,,,
+,off,100,11,info,13,11.92,337.9e-3,,,0
+,on,100,11,info,13,11.96,290.2e-3,,,0
+
