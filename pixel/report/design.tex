@@ -1,4 +1,6 @@
-\section{Design}
+\section{Introduction and Design}
+This report presents the implementation of a relative intensity vision sensor pixel, intended for use in 
+an asynchronous line sensor. 
 \begin{figure}
     \center
     \includegraphics[trim={4.5cm 0 4.5cm 0},clip,width=\textwidth]{pixel-design.eps}
@@ -10,11 +12,12 @@
     C1 2.84 pF, C2 50 fF and C3 30 fF. \(\Sigma I\) and C4 are unused. Reproduced from~\cite{Lichtsteiner2008}}
     \label{fig:pixel-design}
 \end{figure}
-We use the pixel design by Lichtsteiner et al.~\cite{Lichtsteiner2008}, which is reproduced in Fig~\ref{fig:pixel-design}.
-The optimization criteria of our modifications to the referenced design is given by the following figure of merit (FOM)
-\begin{equation*}
-    \frac{\text{bandwidth}}{P_{\text{avg}}\cdot \text{mismatch\%}\cdot L}
-\end{equation*}
+We will use the pixel design by Lichtsteiner et al.~\cite{Lichtsteiner2008}, which is reproduced in Fig~\ref{fig:pixel-design}.
+The modifications to the referenced design will be evaluated by the following figure of merit (FOM)
+\begin{equation}
+    \text{FOM} = \frac{\text{bandwidth}}{P_{\text{avg}}\cdot \text{mismatch\%}\cdot L}
+    \label{eq:FOM}
+\end{equation}
 Where \(P_{\text{avg}}\) is the average power consumption for our fixed evaluation input signal, mismatch is the 
 \(3\sigma\) change in relative light intensity sensitivity due to mismatch, and \(L\) is the length of the pixel in feature units (180 nm).
 Additionally, a factor 3.3 change in contrast must produce a mean of 12 events, and the width of the pixel is
